@@ -26,8 +26,20 @@ struct FirefoxProfileExporter {
         // For demonstration, we'll just print the number of threads in the profile
         print("Loaded Firefox profile with \(profile.threads.count) threads.")
 
-        let thread: Thread = profile.threads[self.thread]
-        let root: CallNode = thread.buildCallTree()
+        for (index, thread): (Int, FirefoxProfile.Thread) in zip(
+                profile.threads.indices,
+                profile.threads
+            ) {
+            print("Thread \(index): \(thread.name)")
+        }
+
+        guard profile.threads.indices ~= self.thread else {
+            print("invalid thread index")
+            return
+        }
+
+        let root: CallNode = profile.threads[self.thread].buildCallTree(shared: profile.shared)
+
         guard
         let focus: CallNode = root.focused(on: self.function) else {
             print("function not found")
@@ -36,7 +48,10 @@ struct FirefoxProfileExporter {
 
         let baseline: Int = focus.totalSamples
         guard
-        let exportData: ExportNode = focus.export(baselineSamples: baseline, threshold: 0.5) else {
+        let exportData: ExportNode = focus.export(
+            baselineSamples: baseline,
+            threshold: 0.5
+        ) else {
             print("failed to export")
             return
         }

@@ -35,7 +35,7 @@ extension CallNode {
 
         for child: CallNode in self.children.values {
             let foundInChild: Bool = child.search(for: target, mergingInto: newRoot)
-            if foundInChild {
+            if  foundInChild {
                 found = true
             }
         }
