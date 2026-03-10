@@ -48,7 +48,7 @@ struct FirefoxProfileExporter {
 
         let baseline: Int = focus.totalSamples
         guard
-        let exportData: ExportNode = focus.export(
+        let exported: ExportNode = focus.export(
             baselineSamples: baseline,
             threshold: 0.5
         ) else {
@@ -56,6 +56,8 @@ struct FirefoxProfileExporter {
             return
         }
 
-        print(exportData.renderAsText())
+        print("[total | self] <function name>")
+        print()
+        print(exported.rendered)
     }
 }

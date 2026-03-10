@@ -3,21 +3,22 @@ import FirefoxProfile
 
 extension ExportNode {
     /// Renders the node and its children as an indented, multi-line string.
-    public func renderAsText(depth: Int = 0) -> String {
+    var rendered: String {
+        let swift: SwiftDemangler? = .init()
+        return self.render(depth: 0, swift: swift)
+    }
+
+    private func render(depth: Int, swift: SwiftDemangler?) -> String {
         let indent: String = .init(repeating: " ", count: depth * 2)
-
-        // Use the `D` library's `[%]` operator to format fractions as percentages
-        // with 2 decimal places.
-        let totalString: String = "\(self.totalFraction[%2])"
-        let selfString: String = "\(self.selfFraction[%2])"
-
-        let line: String = "\(indent)[\(totalString) Total | \(selfString) Self] \(self.name)"
-
+        let name: String = swift?.demangle(compound: self.name) ?? self.name
+        let line: String = """
+        \(indent)[\(self.totalFraction[%2]) | \(self.selfFraction[%2])] \(name)
+        """
         var result: String = line
 
         for child: ExportNode in self.children {
-            let childText: String = child.renderAsText(depth: depth + 1)
-            result += "\n" + childText
+            result += "\n"
+            result += child.render(depth: depth + 1, swift: swift)
         }
 
         return result
