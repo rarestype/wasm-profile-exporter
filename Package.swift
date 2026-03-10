@@ -7,6 +7,7 @@ let package: Package = .init(
     products: [
     ],
     dependencies: [
+        .package(url: "https://github.com/tayloraswift/d", from: "0.7.0"),
         .package(url: "https://github.com/tayloraswift/swift-json", from: "2.3.0"),
         .package(url: "https://github.com/tayloraswift/swift-io", from: "0.1.0"),
     ],
@@ -16,6 +17,7 @@ let package: Package = .init(
             dependencies: [
                 .target(name: "FirefoxProfile"),
 
+                .product(name: "D", package: "d"),
                 .product(name: "JSON", package: "swift-json"),
                 .product(name: "SystemIO", package: "swift-io"),
                 .product(name: "System_ArgumentParser", package: "swift-io"),
