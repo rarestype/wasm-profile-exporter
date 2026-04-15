@@ -1,4 +1,4 @@
-public struct ExportNode {
+@frozen public struct ExportNode {
     public let name: String
     public let totalFraction: Double
     public let selfFraction: Double

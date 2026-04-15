@@ -1,21 +1,23 @@
-public final class CallNode {
-    public let name: String
-    public var totalSamples: Int
-    public var selfSamples: Int
-    public var children: [String: CallNode]
+extension Gecko {
+    public final class CallNode {
+        public let name: String
+        public var totalSamples: Int
+        public var selfSamples: Int
+        public var children: [String: CallNode]
 
-    public init(name: String) {
-        self.name = name
-        self.totalSamples = 0
-        self.selfSamples = 0
-        self.children = [:]
+        public init(name: String) {
+            self.name = name
+            self.totalSamples = 0
+            self.selfSamples = 0
+            self.children = [:]
+        }
     }
 }
-extension CallNode {
+extension Gecko.CallNode {
     /// Returns a new aggregated tree rooted at the given target function name,
     /// or `nil` if the function was never called.
-    public func focused(on target: String) -> CallNode? {
-        let newRoot: CallNode = .init(name: target)
+    public func focused(on target: String) -> Self? {
+        let newRoot: Self = .init(name: target)
         let found: Bool = self.search(for: target, mergingInto: newRoot)
 
         if found {
@@ -25,7 +27,7 @@ extension CallNode {
         }
     }
 
-    private func search(for target: String, mergingInto newRoot: CallNode) -> Bool {
+    private func search(for target: String, mergingInto newRoot: Gecko.CallNode) -> Bool {
         if self.name == target {
             newRoot.merge(with: self)
             return true
@@ -33,7 +35,7 @@ extension CallNode {
 
         var found: Bool = false
 
-        for child: CallNode in self.children.values {
+        for child: Gecko.CallNode in self.children.values {
             let foundInChild: Bool = child.search(for: target, mergingInto: newRoot)
             if  foundInChild {
                 found = true
@@ -44,12 +46,12 @@ extension CallNode {
     }
 
     /// Recursively merges the samples and children of another node into this one.
-    public func merge(with other: CallNode) {
+    public func merge(with other: Gecko.CallNode) {
         self.totalSamples += other.totalSamples
         self.selfSamples += other.selfSamples
 
-        for (name, child): (String, CallNode) in other.children {
-            if let existing: CallNode = self.children[name] {
+        for (name, child): (String, Gecko.CallNode) in other.children {
+            if let existing: Gecko.CallNode = self.children[name] {
                 existing.merge(with: child)
             } else {
                 self.children[name] = child.deepCopy()
@@ -58,19 +60,19 @@ extension CallNode {
     }
 
     /// Creates an independent, deep clone of the current node and all descendants.
-    public func deepCopy() -> CallNode {
-        let copy: CallNode = .init(name: self.name)
+    public func deepCopy() -> Gecko.CallNode {
+        let copy: Gecko.CallNode = .init(name: self.name)
         copy.totalSamples = self.totalSamples
         copy.selfSamples = self.selfSamples
 
-        for (name, child): (String, CallNode) in self.children {
+        for (name, child): (String, Gecko.CallNode) in self.children {
             copy.children[name] = child.deepCopy()
         }
 
         return copy
     }
 }
-extension CallNode {
+extension Gecko.CallNode {
     /// Converts the node into an ExportNode, calculating fractions against a baseline.
     /// Drops any branches where the total percentage falls below the threshold.
     public func export(baselineSamples: Int, threshold: Double) -> ExportNode? {
@@ -89,7 +91,7 @@ extension CallNode {
 
         var exportedChildren: [ExportNode] = []
 
-        for child: CallNode in self.children.values {
+        for child: Gecko.CallNode in self.children.values {
             if let exportedChild: ExportNode = child.export(
                 baselineSamples: baselineSamples,
                 threshold: threshold

@@ -8,14 +8,14 @@ let package: Package = .init(
     ],
     dependencies: [
         .package(url: "https://github.com/tayloraswift/d", from: "0.7.0"),
-        .package(url: "https://github.com/tayloraswift/swift-json", from: "2.3.0"),
-        .package(url: "https://github.com/tayloraswift/swift-io", from: "0.1.0"),
+        .package(url: "https://github.com/rarestype/swift-io", from: "1.2.0"),
+        .package(url: "https://github.com/rarestype/swift-json", from: "2.3.2"),
     ],
     targets: [
         .executableTarget(
-            name: "FirefoxProfileExporter",
+            name: "ProfileExporter",
             dependencies: [
-                .target(name: "FirefoxProfile"),
+                .target(name: "ProfileFormats"),
 
                 .product(name: "D", package: "d"),
                 .product(name: "JSON", package: "swift-json"),
@@ -24,7 +24,7 @@ let package: Package = .init(
             ],
         ),
         .target(
-            name: "FirefoxProfile",
+            name: "ProfileFormats",
             dependencies: [
                 .product(name: "JSON", package: "swift-json"),
             ],
