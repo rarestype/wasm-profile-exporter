@@ -39,20 +39,16 @@ extension FirefoxProfile.Thread {
         // The prefix chain points upwards from the leaf to the root.
         // We iterate until there is no parent prefix.
         while true {
-            // 1. Look up the frame index for this stack entry
             let frameIndex: Int = shared.stackTable.frame[currentIndex]
-
-            // 2. Look up the function index for this frame
-            let funcIndex: Int = shared.frameTable.`func`[frameIndex]
-
-            // 3. Look up the string index for this function's name
+            let funcIndex: Int = shared.frameTable.func[frameIndex]
             let nameIndex: Int = shared.funcTable.name[funcIndex]
 
-            // 4. Resolve the actual text
-            let functionName: String = shared.stringArray[nameIndex]
-            frames.append(functionName)
+            let function: String = shared.stringArray[nameIndex]
+            // ignore hex addresses
+            if !function.hasPrefix("0x") {
+                frames.append(function)
+            }
 
-            // 5. Move up to the parent stack frame, or break if at the root
             if let parentIndex = shared.stackTable.prefix[currentIndex] {
                 currentIndex = parentIndex
             } else {
