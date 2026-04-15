@@ -70,7 +70,7 @@ extension Gecko {
             threshold: 0.5
         ) else {
             print("failed to export")
-            return
+            throw ExitCode.failure
         }
 
         let rendered: String

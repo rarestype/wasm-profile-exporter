@@ -11,7 +11,7 @@ extension Gecko.Profile.Shared.FuncTable: JSONObjectDecodable {
         case name
     }
 
-    init(json: JSON.ObjectDecoder<CodingKey>) throws {
+    init(json: borrowing JSON.ObjectDecoder<CodingKey>) throws {
         self.init(name: try json[.name].decode())
     }
 }
