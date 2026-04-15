@@ -5,6 +5,8 @@ let package: Package = .init(
     name: "wasm-profile-exporter",
     platforms: [.macOS(.v15), .iOS(.v18), .tvOS(.v18), .visionOS(.v2), .watchOS(.v11)],
     products: [
+        .executable(name: "wasm-profile-exporter", targets: ["ProfileExporter"]),
+        .library(name: "ProfileFormats", targets: ["ProfileFormats"]),
     ],
     dependencies: [
         .package(url: "https://github.com/ordo-one/dollup", from: "1.0.1"),
