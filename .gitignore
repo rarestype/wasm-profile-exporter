@@ -1,4 +1,5 @@
+.DS_Store
+
 /.build
-/.build.wasm
+/.build.*
 /Package.resolved
-/*.json

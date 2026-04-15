@@ -29,6 +29,16 @@ let package: Package = .init(
                 .product(name: "JSON", package: "swift-json"),
             ],
         ),
+        .testTarget(
+            name: "ProfileFormatTests",
+            dependencies: [
+                .target(name: "ProfileFormats"),
+                .product(name: "SystemIO", package: "swift-io"),
+            ],
+            exclude: [
+                "profiles",
+            ]
+        ),
     ]
 )
 

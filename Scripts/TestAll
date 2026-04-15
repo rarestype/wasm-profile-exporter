@@ -1,0 +1,10 @@
+#!/bin/bash
+
+set -euo pipefail
+
+swift --version
+
+swift build -c release --build-tests
+
+SWT_SWIFT_ERROR_BACKTRACING_ENABLED=0 \
+swift test -c release
