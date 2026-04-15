@@ -48,8 +48,12 @@ let package: Package = .init(
 
 for target: Target in package.targets {
     {
-        $0 = ($0 ?? []) + [
-            .enableUpcomingFeature("ExistentialAny")
-        ]
-    }(&target.swiftSettings)
+        var settings: [SwiftSetting] = $0 ?? []
+
+        settings.append(.enableUpcomingFeature("ExistentialAny"))
+        settings.append(.enableUpcomingFeature("InternalImportsByDefault"))
+        settings.append(.enableExperimentalFeature("StrictConcurrency"))
+
+        $0 = settings
+    } (&target.swiftSettings)
 }

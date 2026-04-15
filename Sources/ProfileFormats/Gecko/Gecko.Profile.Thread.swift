@@ -1,4 +1,4 @@
-import JSON
+public import JSON
 
 extension Gecko.Profile {
     public struct Thread {

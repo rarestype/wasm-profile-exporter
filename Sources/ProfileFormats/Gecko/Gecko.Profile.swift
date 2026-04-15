@@ -1,4 +1,4 @@
-import JSON
+public import JSON
 
 extension Gecko {
     @frozen public struct Profile {
