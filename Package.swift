@@ -7,7 +7,9 @@ let package: Package = .init(
     products: [
     ],
     dependencies: [
-        .package(url: "https://github.com/tayloraswift/d", from: "0.7.0"),
+        .package(url: "https://github.com/ordo-one/dollup", from: "1.0.1"),
+
+        .package(url: "https://github.com/tayloraswift/d", from: "0.7.1"),
         .package(url: "https://github.com/rarestype/swift-io", from: "1.2.0"),
         .package(url: "https://github.com/rarestype/swift-json", from: "2.3.2"),
     ],

@@ -4,6 +4,9 @@ set -euo pipefail
 
 swift --version
 
+swift package dollup --allow-writing-to-package-directory
+git diff --exit-code
+
 swift build -c release --build-tests
 
 SWT_SWIFT_ERROR_BACKTRACING_ENABLED=0 \

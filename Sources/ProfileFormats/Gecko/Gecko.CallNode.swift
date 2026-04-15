@@ -77,7 +77,9 @@ extension Gecko.CallNode {
     /// Drops any branches where the total percentage falls below the threshold.
     public func export(baselineSamples: Int, threshold: Double) -> ExportNode? {
         // Use explicit type names and `init` tokens for numeric casts within larger expressions
-        let totalFraction: Double = Double.init(self.totalSamples) / Double.init(baselineSamples)
+        let totalFraction: Double = Double.init(self.totalSamples) / Double.init(
+            baselineSamples
+        )
 
         // We still compare the threshold against a 0-100 percentage
         // to keep the CLI argument user-friendly (e.g., passing 0.5 for 0.5%)
@@ -93,9 +95,9 @@ extension Gecko.CallNode {
 
         for child: Gecko.CallNode in self.children.values {
             if let exportedChild: ExportNode = child.export(
-                baselineSamples: baselineSamples,
-                threshold: threshold
-            ) {
+                    baselineSamples: baselineSamples,
+                    threshold: threshold
+                ) {
                 exportedChildren.append(exportedChild)
             }
         }
