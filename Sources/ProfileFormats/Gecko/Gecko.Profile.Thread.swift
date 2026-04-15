@@ -1,34 +1,15 @@
-import JSON
+public import JSON
 
-extension FirefoxProfile {
-    public struct Thread: JSONObjectDecodable {
-        public enum CodingKey: String, Sendable {
-            case name
-            case funcTable
-            case frameTable
-            case stackTable
-            case samples
-        }
-
+extension Gecko.Profile {
+    public struct Thread {
         public let name: String
-        let funcTable: FuncTable?
-        let frameTable: FrameTable?
-        let stackTable: StackTable?
         let samples: Samples
-
-        public init(json: JSON.ObjectDecoder<CodingKey>) throws {
-            self.name = try json[.name].decode()
-            self.funcTable = try json[.funcTable]?.decode()
-            self.frameTable = try json[.frameTable]?.decode()
-            self.stackTable = try json[.stackTable]?.decode()
-            self.samples = try json[.samples].decode()
-        }
     }
 }
-extension FirefoxProfile.Thread {
+extension Gecko.Profile.Thread {
     /// Resolves a stack index into an array of function names.
     /// The resulting array is ordered from the root of the call tree down to the executing leaf.
-    public func resolveStack(index: Int?, shared: FirefoxProfile.Shared) -> [String] {
+    public func resolveStack(index: Int?, shared: Gecko.Profile.Shared) -> [String] {
         // If the stack index is nil, the thread was likely idle during this sample.
         guard var currentIndex = index else {
             return []
@@ -62,8 +43,8 @@ extension FirefoxProfile.Thread {
     }
 
     /// Aggregates all time-series samples into a single call tree.
-    public func buildCallTree(shared: FirefoxProfile.Shared) -> CallNode {
-        let root: CallNode = .init(name: "(root)")
+    public func buildCallTree(shared: Gecko.Profile.Shared) -> Gecko.CallNode {
+        let root: Gecko.CallNode = .init(name: "(root)")
 
         for stackIndex: Int? in self.samples.stack {
             let frames: [String] = self.resolveStack(index: stackIndex, shared: shared)
@@ -72,15 +53,15 @@ extension FirefoxProfile.Thread {
             }
 
             root.totalSamples += 1
-            var current: CallNode = root
+            var current: Gecko.CallNode = root
 
             for frame: String in frames {
-                let next: CallNode
+                let next: Gecko.CallNode
 
-                if let existing: CallNode = current.children[frame] {
+                if let existing: Gecko.CallNode = current.children[frame] {
                     next = existing
                 } else {
-                    let newChild: CallNode = .init(name: frame)
+                    let newChild: Gecko.CallNode = .init(name: frame)
                     current.children[frame] = newChild
                     next = newChild
                 }
@@ -94,5 +75,15 @@ extension FirefoxProfile.Thread {
         }
 
         return root
+    }
+}
+extension Gecko.Profile.Thread: JSONObjectDecodable {
+    @frozen public enum CodingKey: String, Sendable {
+        case name
+        case samples
+    }
+
+    public init(json: borrowing JSON.ObjectDecoder<CodingKey>) throws {
+        self.init(name: try json[.name].decode(), samples: try json[.samples].decode())
     }
 }

@@ -1,14 +1,9 @@
 import D
-import FirefoxProfile
+import ProfileFormats
 
 extension ExportNode {
     /// Renders the node and its children as an indented, multi-line string.
-    var rendered: String {
-        let swift: SwiftDemangler? = .init()
-        return self.render(depth: 0, swift: swift)
-    }
-
-    private func render(depth: Int, swift: SwiftDemangler?) -> String {
+    func render(swift: SwiftDemangler?, indent depth: Int = 0) -> String {
         let indent: String = .init(repeating: " ", count: depth * 2)
         let name: String = swift?.demangle(compound: self.name) ?? self.name
         let line: String = """
@@ -18,7 +13,7 @@ extension ExportNode {
 
         for child: ExportNode in self.children {
             result += "\n"
-            result += child.render(depth: depth + 1, swift: swift)
+            result += child.render(swift: swift, indent: depth + 1)
         }
 
         return result

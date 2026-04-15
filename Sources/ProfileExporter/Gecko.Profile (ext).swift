@@ -1,8 +1,8 @@
-import FirefoxProfile
+import ProfileFormats
 import JSON
 import SystemIO
 
-extension FirefoxProfile {
+extension Gecko.Profile {
     static func load(from file: FilePath) throws -> Self {
         let json: JSON = .init(utf8: try file.read()[...])
         let root: JSON.Node = try .init(parsing: json)

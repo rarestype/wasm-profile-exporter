@@ -1,0 +1,1 @@
+@frozen public enum Gecko {}
