@@ -45,15 +45,16 @@ extension Gecko {
             throw ExitCode.failure
         }
 
-        let root: Gecko.CallNode = profile.threads[self.thread].buildCallTree(
+        let root: CallNode = try .tree(
+            thread: profile.threads[self.thread],
             shared: profile.shared
         )
 
-        let focus: Gecko.CallNode
+        let focus: CallNode
 
         if  let function: String = self.function {
             guard
-            let node: Gecko.CallNode = root.focused(on: function) else {
+            let node: CallNode = root.focused(on: function) else {
                 print("function not found")
                 throw ExitCode.failure
             }
