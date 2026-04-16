@@ -17,8 +17,8 @@ import Testing
             return
         }
 
-        let root: CallNode = try .tree(thread: profile.threads[thread], shared: profile.shared)
-        let node: CallNode? = root.focused(
+        let root: CallTree = try .tree(thread: profile.threads[thread], shared: profile.shared)
+        let node: CallTree? = root.node.focused(
             on: "y2k.wasm.$s10GameEngine0A7SessionC5StateV4tickyyKF"
         )
 
@@ -30,8 +30,8 @@ import Testing
         let json: JSON = .init(utf8: try file.read()[...])
         let thread: V8.Profile = try .init(json: try JSON.Node.init(parsing: json))
 
-        let root: CallNode = try .tree(thread: thread)
-        let node: CallNode? = root.focused(
+        let root: CallTree = try .tree(thread: thread)
+        let node: CallTree? = root.node.focused(
             on: "$s10GameEngine0A7SessionC5StateV4tickyyKF"
         )
 
