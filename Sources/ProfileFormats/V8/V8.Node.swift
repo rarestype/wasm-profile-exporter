@@ -1,22 +1,22 @@
 public import JSON
 
 extension V8 {
-    public struct Node {
-        public let id: Int
-        public let callFrame: CallFrame
-        public let hitCount: Int
-        public let children: [Int]
+    @frozen @usableFromInline struct Node {
+        let id: Int
+        let callFrame: CallFrame
+        let hitCount: Int
+        let children: [Int]
     }
 }
 extension V8.Node: JSONObjectDecodable {
-    @frozen public enum CodingKey: String, Sendable {
+    @frozen @usableFromInline enum CodingKey: String, Sendable {
         case id
         case callFrame
         case hitCount
         case children
     }
 
-    public init(json: borrowing JSON.ObjectDecoder<CodingKey>) throws {
+    @usableFromInline init(json: borrowing JSON.ObjectDecoder<CodingKey>) throws {
         self.init(
             id: try json[.id].decode(),
             callFrame: try json[.callFrame].decode(),

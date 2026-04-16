@@ -1,11 +1,11 @@
 public import JSON
 
 extension V8 {
-    public struct Profile {
-        public let startTime: Double?
-        public let endTime: Double?
-        public let nodes: [Node]
-        public let samples: [Int]?
+    @frozen public struct Profile {
+        let startTime: Double?
+        let endTime: Double?
+        let nodes: [Node]
+        let samples: [Int]?
     }
 }
 extension V8.Profile: JSONObjectDecodable {

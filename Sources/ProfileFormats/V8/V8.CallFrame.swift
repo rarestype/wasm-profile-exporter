@@ -1,22 +1,22 @@
 public import JSON
 
 extension V8 {
-    public struct CallFrame {
-        public let functionName: String
-        public let url: String?
-        public let lineNumber: Int?
-        public let columnNumber: Int?
+    @frozen @usableFromInline struct CallFrame {
+        let functionName: String
+        let url: String?
+        let lineNumber: Int?
+        let columnNumber: Int?
     }
 }
 extension V8.CallFrame: JSONObjectDecodable {
-    @frozen public enum CodingKey: String, Sendable {
+    @frozen @usableFromInline enum CodingKey: String, Sendable {
         case functionName
         case url
         case lineNumber
         case columnNumber
     }
 
-    public init(json: borrowing JSON.ObjectDecoder<CodingKey>) throws {
+    @usableFromInline init(json: borrowing JSON.ObjectDecoder<CodingKey>) throws {
         self.init(
             functionName: try json[.functionName].decode(),
             url: try json[.url]?.decode(),
