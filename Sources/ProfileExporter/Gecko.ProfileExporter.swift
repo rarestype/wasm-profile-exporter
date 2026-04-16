@@ -45,16 +45,16 @@ extension Gecko {
             throw ExitCode.failure
         }
 
-        let root: CallNode = try .tree(
+        let root: CallTree = try .tree(
             thread: profile.threads[self.thread],
             shared: profile.shared
         )
 
-        let focus: CallNode
+        let focus: CallTree
 
         if  let function: String = self.function {
             guard
-            let node: CallNode = root.focused(on: function) else {
+            let node: CallTree = root.node.focused(on: function) else {
                 print("function not found")
                 throw ExitCode.failure
             }
@@ -64,9 +64,9 @@ extension Gecko {
             focus = root
         }
 
-        let baseline: Int = focus.totalSamples
+        let baseline: Int = focus.node.samples.total
         guard
-        let exported: ExportNode = focus.export(
+        let exported: ExportNode = focus.node.export(
             baselineSamples: baseline,
             threshold: 0.5
         ) else {
