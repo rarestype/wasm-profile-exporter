@@ -9,15 +9,12 @@ struct ExportV8 {
         help: "path to the V8 JSON profile",
     ) var input: FilePath
 
+    @OptionGroup var demangle: SwiftDemangleOptions
+
     @Option(
         name: [.customShort("f")],
         help: "name of function to focus on",
     ) var function: String?
-
-    @Flag(
-        name: [.customShort("s"), .long],
-        help: "demangle Swift symbols",
-    ) var demangle: Bool = false
 }
 extension ExportV8: ParsableCommand {
     static var configuration: CommandConfiguration {
@@ -25,8 +22,7 @@ extension ExportV8: ParsableCommand {
     }
 }
 extension ExportV8: CallTreeInspectionCommand {
-    func load(from json: JSON.Node) throws -> CallTree {
-        let profile: V8.Profile = try .init(json: json)
-        return try .tree(thread: profile)
+    func load(from profile: V8.Profile) throws -> CallTree {
+        try .tree(thread: profile)
     }
 }

@@ -13,7 +13,7 @@ let package: Package = .init(
 
         .package(url: "https://github.com/tayloraswift/d", from: "0.7.1"),
         .package(url: "https://github.com/rarestype/swift-io", from: "1.2.0"),
-        .package(url: "https://github.com/rarestype/swift-json", from: "2.3.2"),
+        .package(url: "https://github.com/rarestype/swift-json", from: "3.3.0"),
     ],
     targets: [
         .executableTarget(
@@ -31,6 +31,7 @@ let package: Package = .init(
             name: "ProfileFormats",
             dependencies: [
                 .product(name: "JSON", package: "swift-json"),
+                .product(name: "JQ", package: "swift-json"),
             ],
         ),
         .testTarget(

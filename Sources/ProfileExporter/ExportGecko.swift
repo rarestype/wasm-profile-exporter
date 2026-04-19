@@ -2,12 +2,13 @@ import ArgumentParser
 import JSON
 import ProfileFormats
 import SystemIO
-import System_ArgumentParser
 
 struct ExportGecko {
     @Argument(
         help: "path to the Gecko JSON profile",
     ) var input: FilePath
+
+    @OptionGroup var demangle: SwiftDemangleOptions
 
     @Option(
         name: [.customShort("i")],
@@ -17,11 +18,6 @@ struct ExportGecko {
         name: [.customShort("f")],
         help: "name of function to focus on",
     ) var function: String?
-
-    @Flag(
-        name: [.customShort("s"), .long],
-        help: "demangle Swift symbols",
-    ) var demangle: Bool = false
 }
 extension ExportGecko: ParsableCommand {
     static var configuration: CommandConfiguration {
@@ -29,9 +25,7 @@ extension ExportGecko: ParsableCommand {
     }
 }
 extension ExportGecko: CallTreeInspectionCommand {
-    func load(from json: JSON.Node) throws -> CallTree {
-        let profile: Gecko.Profile = try .init(json: json)
-
+    func load(from profile: Gecko.Profile) throws -> CallTree {
         print("loaded Gecko profile with \(profile.threads.count) threads:")
 
         for (index, thread): (Int, Gecko.Profile.Thread) in zip(

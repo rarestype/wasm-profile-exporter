@@ -10,4 +10,4 @@ git diff --exit-code
 swift build -c release --build-tests
 
 SWT_SWIFT_ERROR_BACKTRACING_ENABLED=0 \
-swift test -c release
+swift test -c release --skip-build
