@@ -54,7 +54,7 @@ jobs:
                 uses: rarestype/swift-install-action@v1
                 if: runner.os != 'macOS'
                 with:
-                    swift-release: 6.3-RELEASE
+                    swift-release: 6.3.1-RELEASE
 
             -   name: 💝 Select Xcode 26.4 💝
                 if: runner.os == 'macOS'
