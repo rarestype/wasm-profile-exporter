@@ -17,15 +17,9 @@ extension CallTreeInspectionCommand {
         let json: JSON = .init(utf8: try self.input.read()[...])
         let jsonAST: JSON.Node = try JSON.Node.init(parsing: json)
         if  let output: FilePath = self.demangle.output {
-            guard
-            let swift: SwiftDemangler = .init() else {
-                print("could not load demangler")
-                throw ExitCode.failure
-            }
-
             var jsonAST: JSON.Node = consume jsonAST
             try PerformanceProfile.resymbolicate(json: &jsonAST) {
-                swift.demangle(compound: $0) ?? $0
+                SwiftDemangler.demangle(compound: $0) ?? $0
             }
 
             try output.overwrite(with: "\(jsonAST)".utf8)
@@ -59,16 +53,9 @@ extension CallTreeInspectionCommand {
             throw ExitCode.failure
         }
 
-        let rendered: String
-        if  self.demangle.enabled {
-            let swift: SwiftDemangler? = .init()
-            rendered = exported.render(swift: swift)
-        } else {
-            rendered = exported.render(swift: nil)
-        }
 
         print("[total | self] <function name>")
         print()
-        print(rendered)
+        print(exported.render(demangle: self.demangle.enabled))
     }
 }
