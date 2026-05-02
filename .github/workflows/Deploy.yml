@@ -74,12 +74,26 @@ jobs:
                     swift build -c release \
                         --product wasm-profile-exporter
 
+            -   name: 💝 Build perf 💝
+                if: runner.os == 'Linux'
+                run: |
+                    Scripts/BuildPerf
 
             -   name: 💝 Deploy 💝
                 uses: rarestype/r2-release-action@v1
                 with:
                     include: wasm-profile-exporter
                     archive: wasm-profile-exporter.tar.gz
+                    version: ${{ inputs.version }}
+                    bucket: rarest
+
+            -   name: 💝 Deploy perf 💝
+                uses: rarestype/r2-release-action@v1
+                if: runner.os == 'Linux'
+                with:
+                    from: linux/tools/perf
+                    include: perf
+                    archive: perf.tar.gz
                     version: ${{ inputs.version }}
                     bucket: rarest
 
