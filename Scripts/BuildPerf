@@ -1,0 +1,30 @@
+#!/bin/bash
+
+set -euo pipefail
+
+sudo apt install -y \
+    flex \
+    bison \
+    libbabeltrace-dev \
+    libbabeltrace-ctf-dev \
+    libdw-dev \
+    libelf-dev \
+    libtraceevent-dev
+
+kernel_version=$(uname -r)
+kernel_version="${kernel_version%%-*}"
+kernel_version="${kernel_version%.*}"
+
+echo "building perf for linux kernel version ${kernel_version}"
+
+if [[ -d linux ]]; then
+    git -C linux checkout "v${kernel_version}"
+else
+    git clone --depth 1 -b "v${kernel_version}" \
+        git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+fi
+
+make -C linux/tools/perf LIBBABELTRACE=1
+linux/tools/perf/perf version --build-options
+
+echo "💖 perf binary compiled at: linux/tools/perf/perf"

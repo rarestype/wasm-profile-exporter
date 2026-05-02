@@ -31,7 +31,7 @@ jobs:
             code_changed: ${{ steps.changes.outputs.any_changed }}
 
     Linux:
-        runs-on: ubuntu-24.04
+        runs-on: ubuntu-24.04-arm
         name: Ubuntu 24.04
         needs: changes
         if: needs.changes.outputs.code_changed == 'true'
@@ -46,6 +46,9 @@ jobs:
 
             -   name: 💖 Run tests 💖
                 run: Scripts/TestAll
+
+            -   name: 💖 Build perf 💖
+                run: Scripts/BuildPerf
 
             -   name: 💖 Update badge 💖
                 uses: rarestype/rarestbadge@v1
