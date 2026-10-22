@@ -24,7 +24,7 @@ else
         git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
 fi
 
-make -C linux/tools/perf LIBBABELTRACE=1
+make -C linux/tools/perf LIBBABELTRACE=1 NO_JVMTI=1
 linux/tools/perf/perf version --build-options
 
 echo "💖 perf binary compiled at: linux/tools/perf/perf"
