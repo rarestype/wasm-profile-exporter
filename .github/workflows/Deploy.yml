@@ -66,7 +66,6 @@ jobs:
                 run: |
                     swift build -c release \
                         --static-swift-stdlib \
-                        -Xswiftc -static-stdlib \
                         --product wasm-profile-exporter
 
             -   name: 💝 Build 💝
