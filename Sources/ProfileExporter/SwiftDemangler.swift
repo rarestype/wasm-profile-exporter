@@ -19,8 +19,13 @@ extension SwiftDemangler {
         }.joined(separator: ".")
     }
     public static func demangle(prefixed symbol: String) -> String? {
-        if  let string: UnsafeMutablePointer<Int8> =
-            _swift_demangle(symbol, symbol.utf8.count, nil, nil, 0) {
+        if  let string: UnsafeMutablePointer<Int8> = _swift_demangle(
+                symbol,
+                symbol.utf8.count,
+                nil,
+                nil,
+                0
+            ) {
             defer {
                 string.deallocate()
             }
